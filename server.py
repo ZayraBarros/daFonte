@@ -11,7 +11,8 @@ from urllib.parse import urlparse
 import os
 
 # Configurações de email
-EMAIL_DESTINO = "felipe.bastos3357@gmail.com"
+# Permite sobrescrever o destino via variável de ambiente
+EMAIL_DESTINO = os.getenv("EMAIL_DESTINO", "felipe.bastos3357@gmail.com")
 # Para usar Gmail, você precisa criar uma "Senha de app" em:
 # https://myaccount.google.com/apppasswords
 # Deixe vazio para testar sem envio real (vai apenas imprimir no console)

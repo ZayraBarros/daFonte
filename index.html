@@ -191,54 +191,69 @@
 </a>
 
 <script>
-  document.getElementById('contactForm').addEventListener('submit', async function(e) {
-    e.preventDefault();
-    
-    const form = e.target;
-    const messageDiv = document.getElementById('formMessage');
-    const button = form.querySelector('button[type="submit"]');
-    
-    const nome = document.getElementById('nome').value;
-    const email = document.getElementById('email').value;
-    const whatsapp = document.getElementById('whatsapp').value;
-    
-    // Desabilita o botão
-    button.disabled = true;
-    button.textContent = 'ENVIANDO...';
-    messageDiv.style.display = 'none';
-    
-    try {
-      const response = await fetch('/send-email', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          nome: nome,
-          email: email,
-          whatsapp: whatsapp
-        })
-      });
-      
-      const result = await response.json();
-      
-      if (response.ok) {
-        messageDiv.style.display = 'block';
-        messageDiv.style.color = '#4ade80';
-        messageDiv.textContent = '✓ Mensagem enviada com sucesso!';
-        form.reset();
-      } else {
-        throw new Error(result.error || 'Erro ao enviar');
-      }
-    } catch (error) {
-      messageDiv.style.display = 'block';
-      messageDiv.style.color = '#ef4444';
-      messageDiv.textContent = '✗ Erro ao enviar. Tente novamente.';
-    } finally {
-      button.disabled = false;
-      button.textContent = 'RECEBER ORÇAMENTO';
+  // Robust form submit handler: if the page is opened via file:// we'll post to localhost:8000
+  (function(){
+    const form = document.getElementById('contactForm');
+    if(!form) return;
+
+    // Determine API base: when using file:// or a local dev server (localhost / 127.0.0.1),
+    // point to the backend running on port 8000. This covers cases like
+    // http://127.0.0.1:64811 (Live Server) so fetch will go to http://127.0.0.1:8000
+    const hostname = window.location.hostname;
+    const protocol = window.location.protocol === 'file:' ? 'http:' : window.location.protocol;
+    let API_BASE = '';
+    if (hostname === 'localhost' || hostname === '127.0.0.1' || window.location.protocol === 'file:') {
+      API_BASE = `${protocol}//${hostname}:8000`;
     }
-  });
+
+    form.addEventListener('submit', async function(e){
+      e.preventDefault();
+      const messageDiv = document.getElementById('formMessage');
+      const button = form.querySelector('button[type="submit"]');
+      const nome = document.getElementById('nome').value;
+      const email = document.getElementById('email').value;
+      const whatsapp = document.getElementById('whatsapp').value;
+
+      button.disabled = true;
+      button.textContent = 'ENVIANDO...';
+      messageDiv.style.display = 'none';
+
+      try{
+        const url = `${API_BASE}/send-email`;
+        console.log('Submitting to', url);
+        const resp = await fetch(url, {
+          method: 'POST',
+          headers: { 'Content-Type':'application/json' },
+          body: JSON.stringify({ nome, email, whatsapp })
+        });
+
+        console.log('Response status', resp.status);
+        let payload = null;
+        const ct = resp.headers.get('content-type') || '';
+        if(ct.includes('application/json')) payload = await resp.json(); else payload = { text: await resp.text() };
+
+        if(resp.ok){
+          messageDiv.style.display = 'block';
+          messageDiv.style.color = '#4ade80';
+          messageDiv.textContent = '✓ Mensagem enviada com sucesso!';
+          form.reset();
+        } else {
+          console.error('Server error:', payload);
+          messageDiv.style.display = 'block';
+          messageDiv.style.color = '#ef4444';
+          messageDiv.textContent = `✗ Erro ao enviar: ${payload.error || payload.text || resp.status}`;
+        }
+      }catch(err){
+        console.error('Fetch error', err);
+        messageDiv.style.display = 'block';
+        messageDiv.style.color = '#ef4444';
+        messageDiv.textContent = `✗ Erro ao enviar. Verifique o console. (${err.message})`;
+      }finally{
+        button.disabled = false;
+        button.textContent = 'RECEBER ORÇAMENTO';
+      }
+    });
+  })();
 </script>
 
 </body>
