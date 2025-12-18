@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>DAFONTE — Alta Performance Asfáltica</title>
+  <meta name="description" content="Alta performance asfáltica. Fresagem e reciclagem de asfalto com tecnologia de ponta. Receba sua proposta em até 24 horas." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+
+ 
+</head>
+<body>
+
+
+
+<!-- 1️⃣ HERO — conforme DIRECIONAMENTO -->
+<section class="hero hero-tecvia">
+  <div class="hero-left">
+    <img src="img/logo-dafonte-2.png" alt="DA FONTE Infraestrutura" class="hero-logo">
+
+    <h1>
+     ALTA PERFORMANCE ASFÁLTICA. <br>
+     <span class="hero-subline">Obras com Tecnologia de Ponta e Execução Garantida pela <span class="hero-brand">DAFONTE</span>.</span>
+
+    </h1>
+
+    <p class="hero-text">
+      Receba sua proposta personalizada em até 24 horas. 
+      Soluções inteligentes e econômicas em fresagem e 
+      reciclagem de asfalto para todo o território nacional.
+
+    </p>
+
+  </div>
+
+  <div class="hero-right">
+    <form class="hero-form" id="contactForm">
+      <label>Nome *</label>
+      <input type="text" id="nome" name="nome" placeholder="Insira seu nome" required>
+
+      <label>E-mail *</label>
+      <input type="email" id="email" name="email" placeholder="Insira seu e-mail" required>
+
+      <label>WhatsApp *</label>
+      <input type="tel" id="whatsapp" name="whatsapp" placeholder="+55" required>
+
+      <button type="submit">RECEBER ORÇAMENTO</button>
+      <div id="formMessage" style="margin-top: 12px; font-size: 14px; display: none;"></div>
+    </form>
+  </div>
+</section>
+
+<section class="equipments">
+  <h2>Nossos Equipamentos</h2>
+  <p class="equip-subtitle">
+    Tecnologia própria e equipamentos de alto desempenho para garantir
+    eficiência, qualidade e economia em cada obra.
+  </p>
+
+  <div class="equipments-grid">
+    <div class="equipment-card">
+      <img src="/img/equipamentos/equip1.webp" alt="Equipamento 1">
+      <h3>ESPARGIDOR</h3>
+    </div>
+
+    <div class="equipment-card">
+      <img src="/img/equipamentos/equip2.webp" alt="Equipamento 2">
+      <h3>USINAS DE ASFALTO</h3>
+    </div>
+
+    <div class="equipment-card">
+      <img src="/img/equipamentos/equip4.webp" alt="Equipamento 4">
+      <h3>TAPA BURACO <br>SR8000TB-1 </h3>
+    </div>
+
+    <div class="equipment-card">
+      <img src="/img/equipamentos/equip5.webp" alt="Equipamento 5">
+      <h3>USINA DE MICROPAVIMENTO</h3>
+    </div>
+
+    <div class="equipment-card">
+      <img src="/img/equipamentos/equip6.webp" alt="Equipamento 1">
+      <h3>DISTRIBUIDOR DE AGREGADOS REBOCÁVEL</h3>
+    </div>
+
+    <div class="equipment-card">
+      <img src="/img/equipamentos/equip7.webp" alt="Equipamento 2">
+      <h3>HIDRORRIO <br>(Desobstrução de galerias)</h3>
+    </div>
+
+    <div class="equipment-card">
+      <img src="/img/equipamentos/equip8.webp" alt="Equipamento 4">
+      <h3>TRompedores Hidráulicos <br>LINHA START </h3>
+    </div>
+
+    <div class="equipment-card">
+      <img src="/img/equipamentos/equip9.webp" alt="Equipamento 5">
+      <h3>Mini Escavadeira <br>WACKER NEUSON</h3>
+    </div>
+  </div>
+
+    <div class="equipments-actions" style="text-align:center;">
+      <a class="equip-more" href="https://dafonteinfra.com.br/produtos/" target="_blank" rel="noopener noreferrer">VER MAIS</a>
+    </div>
+
+
+  
+</section>
+
+
+
+<!-- 3️⃣ CLIENTES -->
+<section class="center">
+  <h2>Clientes</h2>
+
+  <div class="clients-carousel" aria-label="Logos de clientes">
+    <div class="clients-track-wrapper">
+      <div class="clients-track">
+        <img src="/img/clientes/ACA-construction.webp" alt="Braenge">
+        <img src="/img/clientes/asphaltech.webp" alt="Constru Rocha">
+        <img src="/img/clientes/braenge.webp" alt="Couto">
+        <img src="/img/clientes/constru-rocha-preto.webp" alt="Lidermac">
+        <img src="/img/clientes/couto.webp" alt="Ancar">
+        <img src="/img/clientes/esse.webp" alt="DA FONTE">
+        <img src="/img/clientes/lidermac-preto.webp" alt="Unir">
+        <img src="/img/clientes/logo-ancar-2.webp" alt="Parceiro">
+        <img src="/img/clientes/unir.webp" alt="Parceiro">
+        
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  (function(){
+    const wrapper = document.querySelector('.clients-track-wrapper');
+    const track = document.querySelector('.clients-track');
+    if(!wrapper || !track) return;
+
+    // Clone all items once to create a seamless repeating track
+    const items = Array.from(track.children);
+    items.forEach(item => {
+      const clone = item.cloneNode(true);
+      track.appendChild(clone);
+    });
+
+    let autoPlayInterval = 3000;
+    let timer = null;
+
+    const scrollAmount = () => wrapper.clientWidth * 0.6;
+
+    function goNext(){
+      wrapper.scrollBy({ left: scrollAmount(), behavior: 'smooth' });
+    }
+
+    wrapper.addEventListener('mouseenter', ()=> stopTimer());
+    wrapper.addEventListener('mouseleave', ()=> startTimer());
+
+    function startTimer(){ stopTimer(); timer = setInterval(goNext, autoPlayInterval); }
+    function stopTimer(){ if(timer) clearInterval(timer); timer = null; }
+
+    // When scrolling past the first set of items (half the track because we cloned),
+    // jump back by that width so the visible sequence continues seamlessly.
+    // Use the current scrollWidth (which is doubled after cloning) / 2.
+    function handleLoop(){
+      const singleTrackWidth = track.scrollWidth / 2;
+      if(wrapper.scrollLeft >= singleTrackWidth){
+        // instant jump back by singleTrackWidth to preserve visual continuity
+        wrapper.scrollLeft = wrapper.scrollLeft - singleTrackWidth;
+      }
+    }
+
+    // Listen to scroll; throttle with requestAnimationFrame for smoother handling
+    let ticking = false;
+    wrapper.addEventListener('scroll', ()=>{
+      if(!ticking){
+        window.requestAnimationFrame(()=>{ handleLoop(); ticking = false; });
+        ticking = true;
+      }
+    });
+
+    // init
+    startTimer();
+  })();
+</script>
+
+<!-- 4️⃣ CTA FINAL -->
+<section class="cta">
+  <h2>Sua obra exige tecnologia, confiança e resultado.</h2>
+  <p>Fale agora com a DA FONTE e receba sua proposta personalizada.</p>
+  <a href="https://wa.me/5581992670965">QUERO UM ORÇAMENTO RÁPIDO</a>
+</section>
+
+<!-- Botão flutuante WhatsApp -->
+<a href="https://wa.me/55819992670965" class="whatsapp-float" target="_blank" rel="noopener noreferrer" aria-label="Abrir chat WhatsApp">
+  <!-- Full logo SVG: green circle with white phone bubble -->
+  <svg width="44" height="44" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+    <circle cx="256" cy="256" r="256" fill="#25D366" />
+    <path fill="#FFFFFF" d="M391.1 320.6c-6.9-3.5-41-20.1-47.4-22.4-6.4-2.3-11.1-3.5-15.8 3.5-4.7 7-18.2 22.4-22.3 27-4.1 4.7-8.2 5.3-15.1 1.8-41.2-20.6-68.1-36.9-95.4-84.6-7.3-12.8 7.3-11.8 21-38.9 2.3-4.7.6-8.8-.3-12.3-1-3.5-15.8-38.6-21.6-52.9-5.7-13.9-11.6-12-15.8-12.3-4.1-.3-8.8-.3-13.3-.3-4.5 0-11.8 1.6-18 8-6.1 6.4-23.5 23-23.5 56.1s24.1 65.2 27.5 69.6c3.5 4.5 47.6 72.6 115.6 101.7 16.1 6.9 28.6 11 38.4 14.1 16.1 5.1 30.8 4.4 42.4 2.7 12.9-1.8 41-16.7 46.8-32.9 5.8-16.2 5.8-30.1 4.1-33.1-1.7-3.1-6.3-4.9-13.2-8.4z"/>
+  </svg>
+</a>
+
+<script>
+  document.getElementById('contactForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    const form = e.target;
+    const messageDiv = document.getElementById('formMessage');
+    const button = form.querySelector('button[type="submit"]');
+    
+    const nome = document.getElementById('nome').value;
+    const email = document.getElementById('email').value;
+    const whatsapp = document.getElementById('whatsapp').value;
+    
+    // Desabilita o botão
+    button.disabled = true;
+    button.textContent = 'ENVIANDO...';
+    messageDiv.style.display = 'none';
+    
+    try {
+      const response = await fetch('/send-email', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          nome: nome,
+          email: email,
+          whatsapp: whatsapp
+        })
+      });
+      
+      const result = await response.json();
+      
+      if (response.ok) {
+        messageDiv.style.display = 'block';
+        messageDiv.style.color = '#4ade80';
+        messageDiv.textContent = '✓ Mensagem enviada com sucesso!';
+        form.reset();
+      } else {
+        throw new Error(result.error || 'Erro ao enviar');
+      }
+    } catch (error) {
+      messageDiv.style.display = 'block';
+      messageDiv.style.color = '#ef4444';
+      messageDiv.textContent = '✗ Erro ao enviar. Tente novamente.';
+    } finally {
+      button.disabled = false;
+      button.textContent = 'RECEBER ORÇAMENTO';
+    }
+  });
+</script>
+
+</body>
+</html>
