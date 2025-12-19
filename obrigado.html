@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Cadastro realizado com sucesso | DAFONTE</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    body.thank-you-page{
+  margin:0;
+  min-height:100vh;
+  font-family: Montserrat, system-ui, sans-serif;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  position:relative;
+
+  /* 👇 MESMA FOTO DO HERO */
+  background: url('/img/asfalto.jpg') center / cover no-repeat;
+}
+
+/* overlay azul igual ao hero */
+.thank-overlay{
+  position:absolute;
+  inset:0;
+  background: linear-gradient(
+    135deg,
+    rgba(15,42,68,0.82),
+    rgba(30,79,143,0.72)
+  );
+  z-index:1;
+}
+
+/* card central */
+.box{
+  position:relative;
+  z-index:2;
+  max-width:520px;
+  background: rgba(255,255,255,0.10);
+  backdrop-filter: blur(8px);
+  padding:48px 36px;
+  border-radius:16px;
+  box-shadow:0 30px 60px rgba(0,0,0,0.35);
+  text-align:center;
+  color:#fff;
+}
+
+.box h1{
+  font-size:clamp(28px,4vw,38px);
+  margin-bottom:16px;
+}
+
+.box p{
+  font-size:16px;
+  line-height:1.5;
+  opacity:.95;
+  margin-bottom:32px;
+}
+
+/* botão WhatsApp */
+.box .cta{
+  display:inline-block;
+  background:#25d366;
+  color:#fff;
+  padding:16px 28px;
+  border-radius:999px;
+  font-weight:700;
+  text-decoration:none;
+}
+
+/* mobile */
+@media (max-width:600px){
+  .box{
+    padding:36px 24px;
+  }
+}
+
+.back-link{
+  display: block;              /* 🔑 isso força ir pra linha de baixo */
+  margin-top: 20px;
+  font-size: 14px;
+  color: rgba(255,255,255,0.85);
+  text-decoration: none;
+  text-align: center;          /* centraliza abaixo do botão */
+  transition: opacity .2s ease;
+}
+
+.back-link:hover{
+  opacity: 1;
+  text-decoration: underline;
+}
+
+
+
+  </style>
+</head>
+
+  <body class="thank-you-page">
+
+  <div class="thank-overlay"></div>
+
+  <div class="box">
+    <h1>Cadastro realizado com sucesso! ✅</h1>
+
+    <p>
+      Recebemos seus dados e nossa equipe da <strong>DAFONTE</strong><br>
+      entrará em contato em breve para enviar sua proposta.
+    </p>
+
+    <a
+        class="cta"
+        href="https://wa.me/55819992670965"
+        target="_blank"
+        rel="noopener noreferrer"
+        >
+        Falar agora no WhatsApp
+        </a>
+
+        <a href="index.html" class="back-link">
+        ← Voltar para a página inicial
+    </a>
+
+  </div>
+
+
+
+
+</body>
+</html>

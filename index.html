@@ -232,11 +232,9 @@
         const ct = resp.headers.get('content-type') || '';
         if(ct.includes('application/json')) payload = await resp.json(); else payload = { text: await resp.text() };
 
-        if(resp.ok){
-          messageDiv.style.display = 'block';
-          messageDiv.style.color = '#4ade80';
-          messageDiv.textContent = '✓ Mensagem enviada com sucesso!';
-          form.reset();
+        if (resp.ok) {
+          // redireciona para página de obrigado
+          window.location.href = 'obrigado.html';
         } else {
           console.error('Server error:', payload);
           messageDiv.style.display = 'block';
