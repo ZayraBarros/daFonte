@@ -48,3 +48,15 @@ Traceback (most recent call last):
     ~~~~~~~~~~~~~~~~~~^^^
 BrokenPipeError: [Errno 32] Broken pipe
 ----------------------------------------
+2025-12-18 18:03:18,647 INFO: Email enviado com sucesso para zayrita.barros@gmail.com (nome=Teste Automático, email=helio.oficio@gmail.com)
+2025-12-18 18:08:43,441 INFO: Email enviado com sucesso para zayrita.barros@gmail.com (nome=Teste Keyring, email=helio.oficio@gmail.com)
+2025-12-18 18:10:21,968 INFO: Email enviado com sucesso para zayrita.barros@gmail.com (nome=felipe, email=zayraabarros@gmail.com)
+2025-12-18 18:11:13,141 INFO: Email enviado com sucesso para zayrita.barros@gmail.com (nome=FELIPE AMORIM BASTOS, email=zayramanuelle@gmail.com)
+2025-12-18 18:22:13,196 INFO: Email enviado com sucesso para zayrita.barros@gmail.com (nome=FELIPE AMORIM BASTOS, email=teste@gmail.com)
+2025-12-18 18:24:45,886 INFO: Email enviado com sucesso para zayrita.barros@gmail.com (nome=zayra, email=zayramanuelle@gmail.com)
+2025-12-18 18:25:37,775 INFO: Email enviado com sucesso para zayrita.barros@gmail.com (nome=zayra, email=zayramanuelle@gmail.com)
+2025-12-18 18:26:24,626 INFO: Email enviado com sucesso para zayrita.barros@gmail.com (nome=zayra, email=zayramanuelle@gmail.com)
+2025-12-18 18:27:54,601 INFO: Email enviado com sucesso para zayrita.barros@gmail.com (nome=zayra, email=zayramanuelle@gmail.com)
+2025-12-18 18:30:34,062 INFO: Email enviado com sucesso para zayrita.barros@gmail.com (nome=zayra, email=zayramanuelle@gmail.com)
+2025-12-18 18:30:55,555 INFO: Email enviado com sucesso para zayrita.barros@gmail.com (nome=zayra, email=zayramanuelle@gmail.com)
+2025-12-19 08:06:38,217 INFO: Email enviado com sucesso para zayrita.barros@gmail.com (nome=zayra, email=zayramanuelle@gmail.com)

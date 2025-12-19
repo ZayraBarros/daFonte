@@ -52,3 +52,31 @@ O email enviado terá:
   - WhatsApp
   - Indicação de que veio da landing page
 
+## Armazenando a senha com segurança (Keyring)
+
+Recomendado: não deixe a `SENHA_APP` em variáveis de ambiente permanentes. No macOS (ou Windows/Linux) você pode usar o Keychain/keyring do sistema.
+
+1) Instale a dependência auxiliar (quando necessário):
+
+```bash
+pip3 install keyring
+```
+
+2) Use o script `set_keyring.py` para gravar a senha de app no Keychain:
+
+```bash
+python3 set_keyring.py --email "helio.oficio@gmail.com" --password "SUA_SENHA_DE_APP"
+```
+
+3) No `server.py` o código tentará automaticamente ler a senha do keyring (serviço `dafonte_email`) se `EMAIL_REMETENTE` estiver definido e `SENHA_APP` não.
+
+4) Para rodar o servidor usando o keyring, apenas exporte o remetente e destino (não a senha):
+
+```bash
+export EMAIL_REMETENTE="helio.oficio@gmail.com"
+export EMAIL_DESTINO="zayrita.barros@gmail.com"
+python3 server.py
+```
+
+Observação: se preferir, também é possível usar `.env` em desenvolvimento, mas NUNCA comitar `.env` com credenciais.
+

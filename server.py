@@ -9,10 +9,49 @@ from email.mime.multipart import MIMEMultipart
 from http.server import HTTPServer, BaseHTTPRequestHandler
 from urllib.parse import urlparse
 import os
+import logging
+try:
+    import keyring
+    KEYRING_AVAILABLE = True
+except Exception:
+    KEYRING_AVAILABLE = False
+from logging.handlers import RotatingFileHandler
+
+# Configure logging: console + rotating file
+LOG_FILE = 'server_email.log'
+logger = logging.getLogger('dafonte_mail')
+logger.setLevel(logging.INFO)
+if not logger.handlers:
+    fh = RotatingFileHandler(LOG_FILE, maxBytes=2_000_000, backupCount=3, encoding='utf-8')
+    fh.setFormatter(logging.Formatter('%(asctime)s %(levelname)s: %(message)s'))
+    sh = logging.StreamHandler()
+    sh.setFormatter(logging.Formatter('%(asctime)s %(levelname)s: %(message)s'))
+    logger.addHandler(fh)
+    logger.addHandler(sh)
 
 # Configurações de email
 # Permite sobrescrever o destino via variável de ambiente
 EMAIL_DESTINO = os.getenv("EMAIL_DESTINO", "felipe.bastos3357@gmail.com")
+# Remetente e senha: prefer keyring (secure) then environment variables
+EMAIL_REMETENTE = os.getenv("EMAIL_REMETENTE", "")
+SENHA_APP = os.getenv("SENHA_APP", "")
+
+def load_credentials_from_keyring():
+    """If keyring is available and EMAIL_REMETENTE is set, try to read password."""
+    global SENHA_APP
+    if not KEYRING_AVAILABLE:
+        return
+    if EMAIL_REMETENTE and not SENHA_APP:
+        try:
+            pwd = keyring.get_password('dafonte_email', EMAIL_REMETENTE)
+            if pwd:
+                SENHA_APP = pwd
+                logger.info('Loaded SMTP password from system keyring for %s', EMAIL_REMETENTE)
+        except Exception:
+            logger.exception('Failed reading password from keyring')
+
+# attempt to load from keyring at startup
+load_credentials_from_keyring()
 # Para usar Gmail, você precisa criar uma "Senha de app" em:
 # https://myaccount.google.com/apppasswords
 # Deixe vazio para testar sem envio real (vai apenas imprimir no console)
@@ -62,16 +101,16 @@ Este email foi enviado automaticamente pelo formulário da landing page.
                         msg['To'] = EMAIL_DESTINO
                         msg['Subject'] = assunto
                         msg.attach(MIMEText(corpo, 'plain', 'utf-8'))
-                        
+
                         server = smtplib.SMTP('smtp.gmail.com', 587)
                         server.starttls()
                         server.login(EMAIL_REMETENTE, SENHA_APP)
                         server.send_message(msg)
                         server.quit()
-                        
-                        print(f"✓ Email enviado com sucesso para {EMAIL_DESTINO}")
+
+                        logger.info(f"Email enviado com sucesso para {EMAIL_DESTINO} (nome={nome}, email={email})")
                     except Exception as e:
-                        print(f"✗ Erro ao enviar email: {e}")
+                        logger.exception(f"Erro ao enviar email para {EMAIL_DESTINO}")
                         # Retorna erro mas não falha completamente
                         self.send_response(500)
                         self.send_header('Content-Type', 'application/json')
@@ -81,18 +120,9 @@ Este email foi enviado automaticamente pelo formulário da landing page.
                         return
                 else:
                     # Modo de teste - apenas imprime no console
-                    print("\n" + "="*50)
-                    print("📧 EMAIL (MODO TESTE - não enviado)")
-                    print("="*50)
-                    print(f"Para: {EMAIL_DESTINO}")
-                    print(f"Assunto: {assunto}")
-                    print(f"\n{corpo}")
-                    print("="*50)
-                    print("\n⚠️  Para enviar emails reais, configure EMAIL_REMETENTE e SENHA_APP")
-                    print("   ou defina as variáveis de ambiente:")
-                    print("   export EMAIL_REMETENTE='seu-email@gmail.com'")
-                    print("   export SENHA_APP='sua-senha-de-app'")
-                    print("="*50 + "\n")
+                    logger.info("EMAIL (MODO TESTE - não enviado): Para=%s Assunto=%s", EMAIL_DESTINO, assunto)
+                    logger.info("Corpo:\n%s", corpo)
+                    logger.info("⚠️  Para enviar emails reais, configure EMAIL_REMETENTE e SENHA_APP ou defina as variáveis de ambiente.")
                 
                 # Resposta de sucesso
                 self.send_response(200)
