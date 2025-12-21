@@ -182,17 +182,21 @@ Este email foi enviado automaticamente pelo formulário da landing page.
             self.end_headers()
 
 if __name__ == '__main__':
-    port = 8000
-    server = HTTPServer(('localhost', port), EmailHandler)
-    print(f"🚀 Servidor rodando em http://localhost:{port}")
+    port = int(os.environ.get("PORT", 8080))
+
+    server = HTTPServer(('0.0.0.0', port), EmailHandler)
+
+    print(f"🚀 Servidor rodando em http://0.0.0.0:{port}")
     print(f"📧 Emails serão enviados para: {EMAIL_DESTINO}")
+
     if not EMAIL_REMETENTE or not SENHA_APP:
         print("⚠️  Modo TESTE: emails serão apenas exibidos no console")
         print("   Configure EMAIL_REMETENTE e SENHA_APP para envio real")
-    print("\nPressione Ctrl+C para parar o servidor\n")
+
     try:
         server.serve_forever()
     except KeyboardInterrupt:
-        print("\n\nServidor parado.")
-        server.shutdown()
+        print("\nServidor parado.")
+        server.server_close()
+
 
