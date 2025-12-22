@@ -187,6 +187,13 @@
   </svg>
 </a>
 
+<!-- LIGHTBOX -->
+<div class="image-lightbox" id="imageLightbox">
+  <span class="close" id="lightboxClose">&times;</span>
+  <img src="" alt="Imagem ampliada" id="lightboxImg">
+</div>
+
+
 <script>
   // Robust form submit handler: if the page is opened via file:// we'll post to localhost:8000
   (function(){
@@ -247,6 +254,38 @@
         button.disabled = false;
         button.textContent = 'RECEBER ORÇAMENTO';
       }
+    });
+  })();
+
+   (function(){
+    const images = document.querySelectorAll('.equipment-card img');
+    const lightbox = document.getElementById('imageLightbox');
+    const lightboxImg = document.getElementById('lightboxImg');
+    const closeBtn = document.getElementById('lightboxClose');
+
+    if(!images.length) return;
+
+    images.forEach(img => {
+      img.addEventListener('click', () => {
+        lightboxImg.src = img.src;
+        lightbox.classList.add('show');
+        document.body.style.overflow = 'hidden';
+      });
+    });
+
+    function closeLightbox(){
+      lightbox.classList.remove('show');
+      document.body.style.overflow = '';
+    }
+
+    closeBtn.addEventListener('click', closeLightbox);
+
+    lightbox.addEventListener('click', (e) => {
+      if(e.target === lightbox) closeLightbox();
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if(e.key === 'Escape') closeLightbox();
     });
   })();
 </script>
