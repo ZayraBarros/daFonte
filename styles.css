@@ -638,3 +638,50 @@
   line-height: 1;
 }
 
+/* LINKS SIMPLES NO CTA */
+.cta-links{
+  margin-top: 26px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 28px;
+}
+
+/* links sem fundo */
+.cta-links a{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: none !important;
+  box-shadow: none !important;
+  padding: 0;
+}
+
+/* imagens */
+.cta-links img{
+  height: 26px;
+  width: auto;
+  opacity: 0.9;
+  transition: opacity .2s ease, transform .2s ease;
+}
+
+/* hover sutil */
+.cta-links a:hover img{
+  opacity: 1;
+  transform: translateY(-2px);
+}
+
+/* logo dafonte um pouco maior */
+.cta-links a:first-child img{
+  height: 30px;
+}
+
+/* AJUSTE DO BOTÃO CTA NO MOBILE */
+@media (max-width: 600px){
+  .cta a{
+    padding: 14px 22px;          /* antes: 18px 36px */
+    font-size: 14px;             /* reduz o texto */
+    border-radius: 8px;          /* menos “botão gigante” */
+    max-width: 90%;              /* evita estourar largura */
+  }
+}
