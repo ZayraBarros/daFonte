@@ -140,9 +140,12 @@ class EmailHandler(BaseHTTPRequestHandler):
         else:
             # Remove leading slash for file system
             self.path = self.path.lstrip('/')
-        
+
+        # Frontend está em ../front/ relativo ao backend/
+        file_path = os.path.join(os.path.dirname(__file__), '..', 'front', self.path.lstrip('/'))
+
         try:
-            with open(self.path, 'rb') as f:
+            with open(file_path, 'rb') as f:
                 content = f.read()
                 
             # Determinar content type
@@ -162,6 +165,7 @@ class EmailHandler(BaseHTTPRequestHandler):
             
             self.send_response(200)
             self.send_header('Content-Type', content_type)
+            self.send_header('Access-Control-Allow-Origin', '*')
             self.end_headers()
             self.wfile.write(content)
         except FileNotFoundError:
