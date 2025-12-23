@@ -15,18 +15,13 @@ try:
     KEYRING_AVAILABLE = True
 except Exception:
     KEYRING_AVAILABLE = False
-from logging.handlers import RotatingFileHandler
 
-# Configure logging: console + rotating file
-LOG_FILE = 'server_email.log'
+# Configure logging: apenas console (ideal para Railway)
 logger = logging.getLogger('dafonte_mail')
 logger.setLevel(logging.INFO)
 if not logger.handlers:
-    fh = RotatingFileHandler(LOG_FILE, maxBytes=2_000_000, backupCount=3, encoding='utf-8')
-    fh.setFormatter(logging.Formatter('%(asctime)s %(levelname)s: %(message)s'))
     sh = logging.StreamHandler()
     sh.setFormatter(logging.Formatter('%(asctime)s %(levelname)s: %(message)s'))
-    logger.addHandler(fh)
     logger.addHandler(sh)
 
 # Configurações de email
@@ -55,8 +50,6 @@ load_credentials_from_keyring()
 # Para usar Gmail, você precisa criar uma "Senha de app" em:
 # https://myaccount.google.com/apppasswords
 # Deixe vazio para testar sem envio real (vai apenas imprimir no console)
-EMAIL_REMETENTE = os.getenv("EMAIL_REMETENTE", "")
-SENHA_APP = os.getenv("SENHA_APP", "")
 
 class EmailHandler(BaseHTTPRequestHandler):
     def do_OPTIONS(self):

@@ -1,0 +1,6 @@
+# Dependências do servidor DAFONTE
+# Python 3.7+
+
+# Para armazenamento seguro de senhas (opcional, mas recomendado)
+keyring>=23.0.0
+
