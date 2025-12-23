@@ -222,13 +222,14 @@
     if(!form) return;
 
     // Determine API base: when using file:// or a local dev server (localhost / 127.0.0.1),
-    // point to the backend running on port 8000. This covers cases like
-    // http://127.0.0.1:64811 (Live Server) so fetch will go to http://127.0.0.1:8000
+    // point to the backend running on port 8000. Otherwise use Railway production URL.
     const hostname = window.location.hostname;
     const protocol = window.location.protocol === 'file:' ? 'http:' : window.location.protocol;
     let API_BASE = '';
     if (hostname === 'localhost' || hostname === '127.0.0.1' || window.location.protocol === 'file:') {
       API_BASE = `${protocol}//${hostname}:8000`;
+    } else {
+      API_BASE = 'https://dafonte-production.up.railway.app';
     }
 
     form.addEventListener('submit', async function(e){
