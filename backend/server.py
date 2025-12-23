@@ -76,17 +76,15 @@ class EmailHandler(BaseHTTPRequestHandler):
                 # Criar mensagem de email
                 assunto = "Novo contato da Landing Page DAFONTE"
                 corpo = f"""
-Novo contato recebido da Landing Page DAFONTE:
+                Novo contato recebido da Landing Page DAFONTE:
 
-Nome: {nome}
-E-mail: {email}
-WhatsApp: {whatsapp}
+                Nome: {nome}
+                E-mail: {email}
+                WhatsApp: {whatsapp}
 
----
-Este email foi enviado automaticamente pelo formulário da landing page.
-"""
-                
-                # Enviar email
+                ---
+                Este email foi enviado automaticamente pelo formulário da landing page.
+                """
                 if EMAIL_REMETENTE and SENHA_APP:
                     try:
                         msg = MIMEMultipart()
