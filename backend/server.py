@@ -1,22 +1,15 @@
 #!/usr/bin/env python3
 """
 Servidor simples para enviar emails do formulário da landing page
+Usa Resend API (compatível com Railway e outras plataformas cloud)
 """
 import json
-import smtplib
-from email.mime.text import MIMEText
-from email.mime.multipart import MIMEMultipart
+import requests
 from http.server import HTTPServer, BaseHTTPRequestHandler
-from urllib.parse import urlparse
 import os
 import logging
-try:
-    import keyring
-    KEYRING_AVAILABLE = True
-except Exception:
-    KEYRING_AVAILABLE = False
 
-# Configure logging: apenas console (ideal para Railway)
+# Configure logging
 logger = logging.getLogger('dafonte_mail')
 logger.setLevel(logging.INFO)
 if not logger.handlers:
@@ -25,31 +18,9 @@ if not logger.handlers:
     logger.addHandler(sh)
 
 # Configurações de email
-# Permite sobrescrever o destino via variável de ambiente
 EMAIL_DESTINO = os.getenv("EMAIL_DESTINO", "felipe.bastos3357@gmail.com")
-# Remetente e senha: prefer keyring (secure) then environment variables
-EMAIL_REMETENTE = os.getenv("EMAIL_REMETENTE", "")
-SENHA_APP = os.getenv("SENHA_APP", "")
-
-def load_credentials_from_keyring():
-    """If keyring is available and EMAIL_REMETENTE is set, try to read password."""
-    global SENHA_APP
-    if not KEYRING_AVAILABLE:
-        return
-    if EMAIL_REMETENTE and not SENHA_APP:
-        try:
-            pwd = keyring.get_password('dafonte_email', EMAIL_REMETENTE)
-            if pwd:
-                SENHA_APP = pwd
-                logger.info('Loaded SMTP password from system keyring for %s', EMAIL_REMETENTE)
-        except Exception:
-            logger.exception('Failed reading password from keyring')
-
-# attempt to load from keyring at startup
-load_credentials_from_keyring()
-# Para usar Gmail, você precisa criar uma "Senha de app" em:
-# https://myaccount.google.com/apppasswords
-# Deixe vazio para testar sem envio real (vai apenas imprimir no console)
+EMAIL_REMETENTE = os.getenv("EMAIL_REMETENTE", "contato@dafonteinfra.com.br")
+RESEND_API_KEY = os.getenv("RESEND_API_KEY", "")
 
 class EmailHandler(BaseHTTPRequestHandler):
     def do_OPTIONS(self):
@@ -85,24 +56,35 @@ class EmailHandler(BaseHTTPRequestHandler):
                 ---
                 Este email foi enviado automaticamente pelo formulário da landing page.
                 """
-                if EMAIL_REMETENTE and SENHA_APP:
+                if RESEND_API_KEY:
                     try:
-                        msg = MIMEMultipart()
-                        msg['From'] = EMAIL_REMETENTE
-                        msg['To'] = EMAIL_DESTINO
-                        msg['Subject'] = assunto
-                        msg.attach(MIMEText(corpo, 'plain', 'utf-8'))
+                        response = requests.post(
+                            'https://api.resend.com/emails',
+                            headers={
+                                'Authorization': f'Bearer {RESEND_API_KEY}',
+                                'Content-Type': 'application/json'
+                            },
+                            json={
+                                'from': EMAIL_REMETENTE,
+                                'to': [EMAIL_DESTINO],
+                                'subject': assunto,
+                                'text': corpo
+                            },
+                            timeout=10
+                        )
 
-                        server = smtplib.SMTP('smtp.gmail.com', 587)
-                        server.starttls()
-                        server.login(EMAIL_REMETENTE, SENHA_APP)
-                        server.send_message(msg)
-                        server.quit()
-
-                        logger.info(f"Email enviado com sucesso para {EMAIL_DESTINO} (nome={nome}, email={email})")
+                        if response.status_code == 200:
+                            logger.info(f"Email enviado com sucesso para {EMAIL_DESTINO} (nome={nome}, email={email})")
+                        else:
+                            logger.error(f"Erro ao enviar email: {response.status_code} - {response.text}")
+                            self.send_response(500)
+                            self.send_header('Content-Type', 'application/json')
+                            self.send_header('Access-Control-Allow-Origin', '*')
+                            self.end_headers()
+                            self.wfile.write(json.dumps({'error': 'Erro ao enviar email'}).encode())
+                            return
                     except Exception as e:
                         logger.exception(f"Erro ao enviar email para {EMAIL_DESTINO}")
-                        # Retorna erro mas não falha completamente
                         self.send_response(500)
                         self.send_header('Content-Type', 'application/json')
                         self.send_header('Access-Control-Allow-Origin', '*')
@@ -113,7 +95,7 @@ class EmailHandler(BaseHTTPRequestHandler):
                     # Modo de teste - apenas imprime no console
                     logger.info("EMAIL (MODO TESTE - não enviado): Para=%s Assunto=%s", EMAIL_DESTINO, assunto)
                     logger.info("Corpo:\n%s", corpo)
-                    logger.info("⚠️  Para enviar emails reais, configure EMAIL_REMETENTE e SENHA_APP ou defina as variáveis de ambiente.")
+                    logger.info("⚠️  Para enviar emails reais, configure RESEND_API_KEY nas variáveis de ambiente.")
                 
                 # Resposta de sucesso
                 self.send_response(200)
@@ -184,9 +166,9 @@ if __name__ == '__main__':
     print(f"🚀 Servidor rodando em http://0.0.0.0:{port}")
     print(f"📧 Emails serão enviados para: {EMAIL_DESTINO}")
 
-    if not EMAIL_REMETENTE or not SENHA_APP:
+    if not RESEND_API_KEY:
         print("⚠️  Modo TESTE: emails serão apenas exibidos no console")
-        print("   Configure EMAIL_REMETENTE e SENHA_APP para envio real")
+        print("   Configure RESEND_API_KEY para envio real")
 
     try:
         server.serve_forever()
