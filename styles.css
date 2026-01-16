@@ -457,22 +457,23 @@
 
 /* GRID → FLEX (centraliza última linha automaticamente) */
 .equipments-grid{
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+  justify-content: center; /* 🔑 centraliza última linha */
   gap: 28px;
   max-width: 1200px;
   margin: 0 auto 60px;
 }
 
+
 .equipment-card{
-  flex: 0 0 360px; /* 🔑 ESSENCIAL */
   background: #ffffff;
   padding: 40px 28px;
   border-radius: 10px;
   box-shadow: 0 12px 28px rgba(0,0,0,.08);
   transition: transform .25s ease, box-shadow .25s ease;
 }
+
 
 @media (max-width: 1024px){
   .equipment-card{
