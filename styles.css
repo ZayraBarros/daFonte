@@ -434,17 +434,17 @@
 }
 
 /* GRID */
-.equipments-grid{
-  display: grid;
+/* .equipments-grid{
+  display: grid; */
   /* Forçar 3 cards por linha em larguras de desktop */
-  grid-template-columns: repeat(3, 1fr);
+  /* grid-template-columns: repeat(3, 1fr);
   gap: 28px;
   max-width: 1200px;
   margin: 0 auto 60px;
-}
+} */
 
 /* Responsividade: 2 colunas em telas médias, 1 coluna em mobile */
-@media (max-width: 1024px){
+/* @media (max-width: 1024px){
   .equipments-grid{
     grid-template-columns: repeat(2, 1fr);
   }
@@ -453,15 +453,47 @@
   .equipments-grid{
     grid-template-columns: 1fr;
   }
+} */
+
+/* GRID → FLEX (centraliza última linha automaticamente) */
+.equipments-grid{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 28px;
+  max-width: 1200px;
+  margin: 0 auto 60px;
 }
 
 .equipment-card{
+  width: 360px; /* controla quantos cards cabem por linha */
   background: #ffffff;
   padding: 40px 28px;
   border-radius: 10px;
   box-shadow: 0 12px 28px rgba(0,0,0,.08);
   transition: transform .25s ease, box-shadow .25s ease;
 }
+
+@media (max-width: 1024px){
+  .equipment-card{
+    width: 320px;
+  }
+}
+
+@media (max-width: 600px){
+  .equipment-card{
+    width: 100%;
+  }
+}
+
+
+/* .equipment-card{
+  background: #ffffff;
+  padding: 40px 28px;
+  border-radius: 10px;
+  box-shadow: 0 12px 28px rgba(0,0,0,.08);
+  transition: transform .25s ease, box-shadow .25s ease;
+} */
 
 .equipment-card:hover{
   transform: translateY(-6px);
