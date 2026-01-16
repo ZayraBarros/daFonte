@@ -466,7 +466,7 @@
 }
 
 .equipment-card{
-  width: 360px; /* controla quantos cards cabem por linha */
+  flex: 0 0 360px; /* 🔑 ESSENCIAL */
   background: #ffffff;
   padding: 40px 28px;
   border-radius: 10px;
@@ -476,24 +476,16 @@
 
 @media (max-width: 1024px){
   .equipment-card{
-    width: 320px;
+    flex: 0 0 320px;
   }
 }
 
 @media (max-width: 600px){
   .equipment-card{
-    width: 100%;
+    flex: 0 0 100%;
   }
 }
 
-
-.equipment-card{
-  background: #ffffff;
-  padding: 40px 28px;
-  border-radius: 10px;
-  box-shadow: 0 12px 28px rgba(0,0,0,.08);
-  transition: transform .25s ease, box-shadow .25s ease;
-}
 
 .equipment-card:hover{
   transform: translateY(-6px);
