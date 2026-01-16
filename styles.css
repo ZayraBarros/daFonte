@@ -487,13 +487,13 @@
 }
 
 
-/* .equipment-card{
+.equipment-card{
   background: #ffffff;
   padding: 40px 28px;
   border-radius: 10px;
   box-shadow: 0 12px 28px rgba(0,0,0,.08);
   transition: transform .25s ease, box-shadow .25s ease;
-} */
+}
 
 .equipment-card:hover{
   transform: translateY(-6px);
